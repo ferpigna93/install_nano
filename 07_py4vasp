@@ -1,0 +1,31 @@
+#########____ 7. py4vasp ____#########
+
+git clone https://github.com/vasp-dev/py4vasp.git
+conda create -n py4vasp-env python=3.13 -y
+conda activate py4vasp-env
+cd py4vasp
+conda install -c conda-forge poetry mdtraj -y
+poetry config virtualenvs.create false --local
+	En [tool.poetry.dependencies] cambia la línea de Python a:
+
+	python = ">=3.12,<3.14"
+	(Puedes editar con nano pyproject.toml o usando sed/perl si quieres automático).
+poetry lock
+poetry install
+poetry run pytest -q
+poetry add --group dev jupyterlab notebook voila ipykernel ipywidgets
+python -m ipykernel install --user --name py4vasp-env --display-name "Python (py4vasp-env)"
+
+poetry install
+poetry run pytest
+poetry add jupyterlab
+poetry add pymatgen
+	
+Para remover entorno virtual: 
+conda deactivate            
+conda env remove -n py4vasp-env
+
+para remover warning: 
+	import warnings
+	warnings.filterwarnings("ignore", message=".*pkg_resources.*", category=UserWarning)
+	import py4vasp
