@@ -1,0 +1,42 @@
+#########____ 4. WANNIER90 ____#########
+
+wget 
+
+cp make.inc.ifort make.inc
+
+editar make.inc
+
+# =====================================================
+# Linux 64-bit • Intel oneAPI (ifx/mpiifx) • MKL (LP64)
+# =====================================================
+
+# --- Comunicación: serial o MPI (usa MPI aquí)
+COMMS   = mpi
+
+# --- Compiladores
+F90     = ifx
+MPIF90  = mpiifx
+MPILD   = $(MPIF90)
+
+# --- Flags de compilación/enlace (conservadores y rápidos)
+FCOPTS  = -O3 -xHost -assume byterecl -free -traceback
+LDOPTS  = $(FCOPTS)
+
+# ====================================================
+# BLAS/LAPACK vía Intel MKL (oneAPI)
+# setvars.sh define MKLROOT
+# Opción simple: qmkl=sequential (suficiente para wannier90)
+# ====================================================
+LIBS    = -qmkl=sequential
+
+# --- Alternativa (enlace explícito) ---
+#LIBDIR  = $(MKLROOT)/lib/intel64
+#LIBS    = -L$(LIBDIR) -lmkl_intel_lp64 -lmkl_core -lmkl_sequential
+
+# --- (Opcional) MKL con OpenMP ---
+#FCOPTS += -qopenmp
+#LDOPTS += -qopenmp
+#LIBS    = -qmkl
+
+
+make all
