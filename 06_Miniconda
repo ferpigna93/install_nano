@@ -1,0 +1,38 @@
+#########____ 6. Miniconda ____#########
+
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+chmod Miniconda3-latest-Linux-x86_64.sh
+./Miniconda3-latest-Linux-x86_64.sh
+
+
+WARNING:
+    You currently have a PYTHONPATH environment variable set. This may cause
+    unexpected behavior when running the Python interpreter in Miniconda3.
+    For best results, please verify that your PYTHONPATH only points to
+    directories of packages that are compatible with the Python interpreter
+    in Miniconda3: /root/miniconda3
+Do you wish to update your shell profile to automatically initialize conda?
+This will activate conda on startup and change the command prompt when activated.
+If you'd prefer that conda's base environment not be activated on startup,
+   run the following command when conda is activated:
+
+conda config --set auto_activate_base false
+
+You can undo this by running `conda init --reverse $SHELL`? [yes|no]
+[no] >>> yes
+no change     /root/miniconda3/condabin/conda
+no change     /root/miniconda3/bin/conda
+no change     /root/miniconda3/bin/conda-env
+no change     /root/miniconda3/bin/activate
+no change     /root/miniconda3/bin/deactivate
+no change     /root/miniconda3/etc/profile.d/conda.sh
+no change     /root/miniconda3/etc/fish/conf.d/conda.fish
+no change     /root/miniconda3/shell/condabin/Conda.psm1
+no change     /root/miniconda3/shell/condabin/conda-hook.ps1
+no change     /root/miniconda3/lib/python3.13/site-packages/xontrib/conda.xsh
+no change     /root/miniconda3/etc/profile.d/conda.csh
+modified      /root/.bashrc
+
+==> For changes to take effect, close and re-open your current shell. <==
+
+Thank you for installing Miniconda3!
