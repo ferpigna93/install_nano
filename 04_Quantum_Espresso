@@ -1,0 +1,23 @@
+#########____ 4. Quantum Espresso QE ____#########
+
+sudo apt-get update
+sudo apt-get install -y git
+
+cd /soft/qe-7.4.1/build
+rm -f CMakeCache.txt
+source /opt/intel/oneapi/setvars.sh
+export HDF5_ROOT=/usr/local/hdf5
+
+cmake .. \
+  -DCMAKE_BUILD_TYPE=Release \
+  -DQE_ENABLE_MPI=ON \
+  -DQE_ENABLE_SCALAPACK=ON \
+  -DBLA_VENDOR=Intel10_64lp_seq \
+  -DQE_ENABLE_HDF5=ON \
+  -DHDF5_ROOT="${HDF5_ROOT}" \
+  -DCMAKE_Fortran_COMPILER=mpiifx \
+  -DCMAKE_C_COMPILER=mpiicx \
+  -DCMAKE_CXX_COMPILER=mpiicpx \
+  -DCMAKE_Fortran_FLAGS="-O3 -xHost -assume byterecl" \
+  -DCMAKE_EXE_LINKER_FLAGS="-qmkl=sequential -Wl,-rpath,${HDF5_ROOT}/lib" \
+  -DCMAKE_INSTALL_PREFIX=/soft/qe-7.4.1/install   # ojo: 'install' con doble 'l'
