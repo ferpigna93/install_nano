@@ -23,7 +23,7 @@ WANNIER90_ROOT ?= /soft/wannier90-3.1.0
 LLIBS          += -L$(WANNIER90_ROOT) -lwannier
 
 
-# Tambien se puede copiar el makefile.include del presente directorio.
+# Tambien se puede copiar el makefile.include.example del presente directorio.
 
 make all 
 
