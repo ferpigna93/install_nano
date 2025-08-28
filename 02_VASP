@@ -1,0 +1,21 @@
+#########____ 2. VASP ____#########
+
+cp arch/makefile.include.oneapi makefile.include
+
+editar makefile.include
+
+# Intel MKL (FFTW, BLAS, LAPACK, and scaLAPACK)
+# (Note: for Intel Parallel Studio's MKL use -mkl instead of -qmkl)
+FCL        += -qmkl=sequential
+MKLROOT ?= $(MKLROOT)
+LLIBS      += -L$(MKLROOT)/lib/intel64 -lmkl_scalapack_lp64 -lmkl_blacs_intelmpi_lp64
+INCS        =-I$(MKLROOT)/include/fftw
+
+# HDF5-support (optional but strongly recommended, and mandatory for some features)
+CPP_OPTIONS+= -DVASP_HDF5
+HDF5_ROOT  ?= /usr/local/hdf5
+LLIBS      += -L$(HDF5_ROOT)/lib -lhdf5_fortran
+INCS       += -I$(HDF5_ROOT)/include
+
+make all 
+
