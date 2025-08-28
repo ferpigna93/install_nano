@@ -1,0 +1,8 @@
+#########____ 5. vaspkit ____#########
+
+Bajar https://sourceforge.net/projects/vaspkit/files/Binaries/
+source setup.sh
+Debería dejar todo pronto (~/.vaspkit), sino se puede copiar de otra nano y ajustar (sobretodo los paths a los potpaw de VASP .54) y el camino a python3
+Para dejar andando el autoplot y que imprima los jpg automático
+Pip3  uninstall pillow
+Pip3 install pillow
