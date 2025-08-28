@@ -2,7 +2,7 @@
 
 cp arch/makefile.include.oneapi makefile.include
 
-editar makefile.include
+editar makefile.include:
 
 # Intel MKL (FFTW, BLAS, LAPACK, and scaLAPACK)
 # (Note: for Intel Parallel Studio's MKL use -mkl instead of -qmkl)
@@ -16,6 +16,14 @@ CPP_OPTIONS+= -DVASP_HDF5
 HDF5_ROOT  ?= /usr/local/hdf5
 LLIBS      += -L$(HDF5_ROOT)/lib -lhdf5_fortran
 INCS       += -I$(HDF5_ROOT)/include
+
+# For the VASP-2-Wannier90 interface (optional)
+CPP_OPTIONS    += -DVASP2WANNIER90
+WANNIER90_ROOT ?= /soft/wannier90-3.1.0 
+LLIBS          += -L$(WANNIER90_ROOT) -lwannier
+
+
+# Tambien se puede copiar el makefile.include del presente directorio.
 
 make all 
 
