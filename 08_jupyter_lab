@@ -1,0 +1,23 @@
+#########____ 8. Jupyter Lab ____#########
+
+Algunas consideraciones de uso:
+
+1) En nano23:
+Se ejecuta desde la carpeta desde la que se quiere habilitar esto. Por ejemplo: /home/rfaccio/calculo/vasp
+
+nohup jupyter-lab --port=9000 --no-browser --allow-root --NotebookApp.token='' --NotebookApp.password='' --ip='*' &
+
+#Kill process from name getting PID
+
+ps ax | grep jupyter
+
+2) En PC:
+ssh -N -f -L 8888:localhost:9000 root@nano22
+
+3) Luego en el explorador: Copiar la salida de 1) cambiando el puerto de 9000 a 8888, por ejemplo:
+
+http://nano23.fq.edu.uy:9000/lab 
+
+Si hay problemas de variables de entorno, se abre una terminal y se ejecuta:
+nano21 por ejemplo
+source /root/.bashrc --force
