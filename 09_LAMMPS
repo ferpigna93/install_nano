@@ -1,0 +1,37 @@
+#########____ 9. LAMMPS ____#########
+
+# Desde la raíz del árbol de LAMMPS
+cd /soft/lammps-22Jul2025
+mkdir build
+cd build
+
+# Reconfigura y compila (Intel MPI + OpenMP + MKL)
+cmake ../cmake \
+  -D CMAKE_C_COMPILER=mpiicx \
+  -D CMAKE_CXX_COMPILER=mpiicpx \
+  -D CMAKE_BUILD_TYPE=Release \
+  -D CMAKE_INSTALL_PREFIX=/opt/lammps \
+  -D BUILD_MPI=on \
+  -D BUILD_OMP=on \
+  -D LAMMPS_MACHINE=mpi \
+  -D BUILD_TOOLS=on \
+  -D FFT=MKL \
+  -D PKG_MOLECULE=on \
+  -D PKG_EXTRA-MOLECULE=on \
+  -D PKG_KSPACE=on \
+  -D PKG_RIGID=on \
+  -D PKG_MISC=on \
+  -D PKG_MC=on \
+  -D PKG_MOST=on \
+  -D PKG_ELASTIC=on \
+  -D EXTRA_MOLECULE_BOND=10000 \
+  -D EXTRA_MOLECULE_ANGLE=20000 \
+  -D EXTRA_MOLECULE_DIHEDRAL=25000 \
+  -D EXTRA_MOLECULE_IMPROPER=15000
+
+cmake --build . -j
+sudo cmake --install .
+
+
+cd ../examples/POLYMATIC
+mpirun -np 4 ../../build/lmp -in in.poly
