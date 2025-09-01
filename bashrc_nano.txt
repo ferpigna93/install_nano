@@ -1,0 +1,76 @@
+#_________________________________________________________________
+#
+#
+# Red colour in root prompt (by chiquito)
+PS1='${debian_chroot:+($debian_chroot)}\[\033[01;31m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+
+# Source OneAPI variables
+source /opt/intel/oneapi/setvars.sh
+
+#sudo env "PATH=$PATH" "LD_LIBRARY_PATH=$LD_LIBRARY_PATH" 
+
+
+# Mensajes de bienvenida
+echo -e "\n#############################\n\n__________ NANO23 __________ \n\nSoftware: /soft\nDatos:   /data\n\nCompiled binaries: /soft/bins\n\n#############################\n"
+
+# Compiled binaries
+export PATH=$PATH:/soft/bins
+
+ulimit -s unlimited
+
+export KMP_STACKSIZE=200000000
+
+
+# VESTA
+export PATH=$PATH:/soft/VESTA-gtk3
+
+# HDF5
+export HDF5_DIR=/usr/local/hdf5
+export PATH=$HDF5_DIR/bin:$PATH
+export LD_LIBRARY_PATH=$HDF5_DIR/lib:$LD_LIBRARY_PATH
+
+# WANNIER90
+export WANNIER90_ROOT=/soft/wannier90-3.1.0
+
+#QuantumEspresso
+export PATH=$PATH:/soft/qe-7.4.1/build/bin
+export PATH=/soft/vaspkit.1.5.1/bin:${PATH}
+
+#vaspkit
+export PATH=/soft/vaspkit.1.5.1/bin:${PATH}
+
+
+#VASP tutorials
+export TUTORIALS="/data/curso"
+
+#rm VASP
+alias rmvaspt='rm -f CHG CHGCAR CONTCAR STOPCAR DOSCAR DYNMAT EIGENVAL IBZKPT OPTIC OSZICAR OUTCAR PROCAR PCDAT WAVECAR XDATCAR PARCHG vasprun.xml REPORT wannier90.win wannier90_band.gnu wannier90_band.kpt wannier90.chk wannier90.wout vaspout.h5 PENALTYPOT HILLSPOT ML_LOGFILE ML_ABN ML_FFN ML_HIS ML_REG'
+
+if [[ -z ${DISPLAY} ]]; then
+
+ export DISPLAY=:0.0
+
+fi
+
+export PATH=$PATH:/usr/X11R6/bin
+
+#Kerberos
+export KRB5_CONFIG=~/pdckrb/krb5.conf
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/root/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/root/miniconda3/etc/profile.d/conda.sh" ]; then
+        . "/root/miniconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/root/miniconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+
+
+
