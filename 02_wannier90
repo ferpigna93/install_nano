@@ -1,8 +1,8 @@
 #########____ 2. WANNIER90 ____#########
 
-wget 
-
-cp make.inc.ifort make.inc
+Descargar la última versión de: https://wannier.org/download/
+Descomprimir e ingresar a la carpeta
+cp ./config/make.inc.ifort make.inc
 
 editar make.inc
 
