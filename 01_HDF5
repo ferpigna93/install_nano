@@ -1,7 +1,8 @@
 #########____ 1. HDF5 ____#########
 
 cd /soft
-wget https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.14/hdf5-1.14.6/src/hdf5-1.14.6.tar.gz
+Descargar la última versión en: https://support.hdfgroup.org/downloads/index.html
+Se puede copiar el enlace de descarga y usar: wget [LINK]
 tar -xvf hdf5-1.14.6.tar.gz
 cd hdf5-1.14.6
 
