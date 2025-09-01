@@ -1,0 +1,24 @@
+######_____ 0. INTEL OneAPI _____#######
+
+Developer Tool Requirements:
+
+- GNU* Bash is required for local installation and for setting up the environment to use the toolkit.
+
+- Linux kernel 4.11 or higher
+
+- Linux Developer tools component installed, including gcc, g++ and related tools (sudo apt install gcc g++). The Intel® compilers are tested with a number of different Linux distributions, with different versions of gcc. The version of glibc you use must be consistent with the version of gcc in use. other distributions may or may not work and are not recommended. If you have questions and have Commercial Support, create a support ticket. Otherwise use the Intel Community Forums when you need assistance.
+
+- GNU* GCC* v5.1 or higher.
+
+- The latest version of the Eclipse IDE for C/C++ Developers (sudo snap install eclipse --classic).
+
+- Tool clinfo: a utility that prints out information about available devices on your system (sudo apt install -y clinfo).
+
+- Level 0 and OpenCL  graphics drivers are required to be installed (no hacer nada extra).
+
+#_____________________________________________
+
+Seguir las instrucciones de la siguiente web, se recomienda el método online:
+
+https://www.intel.com/content/www/us/en/developer/tools/oneapi/hpc-toolkit-download.html?packages=hpc-toolkit&hpc-toolkit-os=linux&hpc-toolkit-lin=online
+
