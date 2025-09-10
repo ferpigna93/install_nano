@@ -1,0 +1,14 @@
+#########____ 10. Gaussian ____#########
+
+Copiar las carpetas g09/ g16/ y gv/ desde otra nano en la carpeta /soft.
+
+Para correr, es necesario declarar algunas variables de entorno, estas no pueden estar en el /root/.bashrc porque dan problemas con las librerías de fortran y C, necesarias en otros códigos.
+Por lo tanto, se sugiere declararlas en el propio script que corra los cálculos de Gaussian, estas variables son:
+
+#export g09root=/soft
+#export GAUSS_SCRDIR=/soft
+#source $g09root/g09/bsd/g09.profile
+#export g16root=/soft
+#export GAUSS_SCRDIR=/soft
+#source $g16root/g16/bsd/g16.profile
+#export PATH=$PATH:/soft/gv
