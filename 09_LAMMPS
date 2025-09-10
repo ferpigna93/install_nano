@@ -16,6 +16,7 @@ cmake ../cmake \
   -D LAMMPS_MACHINE=mpi \
   -D BUILD_TOOLS=on \
   -D FFT=MKL \
+  -D PKG_QEQ=yes \
   -D PKG_MOLECULE=on \
   -D PKG_EXTRA-MOLECULE=on \
   -D PKG_KSPACE=on \
