@@ -40,6 +40,8 @@ get_name() {
     local idx=$1
     if [ "$idx" -eq 0 ]; then
         echo "Nanotecnologia"
+    elif [ "$idx" -eq 99 ]; then
+        echo "fer-nano"
     else
         printf "nano%d" "$idx"
     fi
