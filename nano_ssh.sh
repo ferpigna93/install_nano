@@ -30,6 +30,12 @@ declare -A SSH_HOSTS=(
     [99]="root@164.73.163.212"
 )
 
+declare -A HOST_STATUS
+
+GREEN='\033[0;32m'
+RED='\033[0;31m'
+NC='\033[0m'
+
 get_name() {
     local idx=$1
     if [ "$idx" -eq 0 ]; then
@@ -39,20 +45,68 @@ get_name() {
     fi
 }
 
+get_ip() {
+    local host=$1
+    echo "${host##*@}"
+}
+
+# Try TCP connection to port 22; works without nc via bash /dev/tcp fallback
+check_port() {
+    local ip=$1
+    if command -v nc &>/dev/null; then
+        nc -z -w 2 "$ip" 22 2>/dev/null
+    else
+        timeout 2 bash -c "echo >/dev/tcp/$ip/22" 2>/dev/null
+    fi
+}
+
+check_all_hosts() {
+    echo "Checking host status..."
+    local tmpdir
+    tmpdir=$(mktemp -d)
+
+    for idx in "${!SSH_HOSTS[@]}"; do
+        local ip
+        ip=$(get_ip "${SSH_HOSTS[$idx]}")
+        (
+            if check_port "$ip"; then
+                echo "ACTIVE" > "$tmpdir/$idx"
+            else
+                echo "INACTIVE" > "$tmpdir/$idx"
+            fi
+        ) &
+    done
+
+    wait
+
+    for idx in "${!SSH_HOSTS[@]}"; do
+        HOST_STATUS[$idx]=$(cat "$tmpdir/$idx" 2>/dev/null || echo "UNKNOWN")
+    done
+
+    rm -rf "$tmpdir"
+}
+
 print_menu() {
     echo
-    echo "========================================="
-    echo "       Nanotecnologia SSH Menu"
-    echo "========================================="
-    # Print sorted indices (put 99 at the end)
+    echo "====================================================="
+    echo "           Nanotecnologia SSH Menu"
+    echo "====================================================="
     local sorted_indices
     sorted_indices=$(for k in "${!SSH_HOSTS[@]}"; do echo "$k"; done | sort -n)
     for idx in $sorted_indices; do
-        printf "  [%2d]  %s  (%s)\n" "$idx" "$(get_name "$idx")" "${SSH_HOSTS[$idx]}"
+        local status="${HOST_STATUS[$idx]:-UNKNOWN}"
+        if [ "$status" = "ACTIVE" ]; then
+            status_display="${GREEN}ACTIVE${NC}"
+        else
+            status_display="${RED}INACTIVE${NC}"
+        fi
+        printf "  [%2d]  %-15s  %-21s  %b\n" \
+            "$idx" "$(get_name "$idx")" "$(get_ip "${SSH_HOSTS[$idx]}")" "$status_display"
     done
-    echo "========================================="
+    echo "====================================================="
+    echo "   [r]  Refresh status"
     echo "   [q]  Quit"
-    echo "========================================="
+    echo "====================================================="
     echo
 }
 
@@ -72,11 +126,14 @@ connect() {
     fi
 }
 
+check_all_hosts
+
 while true; do
     print_menu
     read -rp "Enter PC number: " choice
 
     [[ "$choice" == "q" || "$choice" == "Q" ]] && { echo "Bye!"; exit 0; }
+    [[ "$choice" == "r" || "$choice" == "R" ]] && { check_all_hosts; continue; }
 
     if ! [[ "$choice" =~ ^[0-9]+$ ]]; then
         echo "Invalid input. Please enter a number."
