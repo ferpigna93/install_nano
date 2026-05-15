@@ -3,7 +3,7 @@
 # SSH connection menu for Nanotecnologia lab PCs
 
 declare -A SSH_HOSTS=(
-    [0]="fpigna@164.73.160.239"
+    [0]="164.73.160.239"
     [2]="root@164.73.160.121"
     [3]="root@164.73.160.147"
     [4]="root@164.73.160.205"
@@ -62,11 +62,12 @@ connect() {
     local name
     name=$(get_name "$idx")
 
-    echo "Connecting to $name ($host)..."
-
     if [ "$idx" -eq 0 ]; then
-        ssh -X "$host"
+        read -rp "Username: " ssh_user
+        echo "Connecting to $name ($ssh_user@$host)..."
+        ssh -o PubkeyAcceptedKeyTypes=+ssh-rsa -X "$ssh_user@$host"
     else
+        echo "Connecting to $name ($host)..."
         ssh -o PubkeyAuthentication=no -X "$host"
     fi
 }
