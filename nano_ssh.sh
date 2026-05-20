@@ -112,20 +112,48 @@ print_menu() {
     echo
 }
 
+do_ssh() {
+    local idx=$1 ssh_user=$2
+    local host="${SSH_HOSTS[$idx]}"
+    local ip err_file exit_code
+    ip=$(get_ip "$host")
+    err_file=$(mktemp)
+
+    if [ "$idx" -eq 0 ]; then
+        ssh -o PubkeyAcceptedKeyTypes=+ssh-rsa -X "$ssh_user@$ip" 2> >(tee "$err_file" >&2)
+    else
+        ssh -o PubkeyAuthentication=no -X "$host" 2> >(tee "$err_file" >&2)
+    fi
+    exit_code=$?
+
+    if [ $exit_code -ne 0 ] && grep -q "REMOTE HOST IDENTIFICATION HAS CHANGED" "$err_file"; then
+        echo
+        echo "Host key mismatch for $ip."
+        read -rp "Remove old key from known_hosts and retry? [y/N] " answer
+        if [[ "$answer" == "y" || "$answer" == "Y" ]]; then
+            ssh-keygen -R "$ip"
+            rm -f "$err_file"
+            do_ssh "$idx" "$ssh_user"
+            return
+        fi
+    fi
+
+    rm -f "$err_file"
+}
+
 connect() {
     local idx=$1
-    local host="${SSH_HOSTS[$idx]}"
-    local name
+    local name ssh_user=""
     name=$(get_name "$idx")
 
     if [ "$idx" -eq 0 ]; then
         read -rp "Username: " ssh_user
-        echo "Connecting to $name ($ssh_user@$host)..."
-        ssh -o PubkeyAcceptedKeyTypes=+ssh-rsa -X "$ssh_user@$host"
+        echo "Connecting to $name ($ssh_user@$(get_ip "${SSH_HOSTS[$idx]}"))..."
     else
-        echo "Connecting to $name ($host)..."
-        ssh -o PubkeyAuthentication=no -X "$host"
+        echo "Connecting to $name (${SSH_HOSTS[$idx]})..."
     fi
+
+    do_ssh "$idx" "$ssh_user"
 }
 
 check_all_hosts
