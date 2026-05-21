@@ -119,10 +119,12 @@ do_ssh() {
     ip=$(get_ip "$host")
     err_file=$(mktemp)
 
+    local keepalive="-o ServerAliveInterval=60 -o ServerAliveCountMax=3"
+
     if [ "$idx" -eq 0 ]; then
-        ssh -o PubkeyAcceptedKeyTypes=+ssh-rsa -X "$ssh_user@$ip" 2> >(tee "$err_file" >&2)
+        ssh $keepalive -o PubkeyAcceptedKeyTypes=+ssh-rsa -X "$ssh_user@$ip" 2> >(tee "$err_file" >&2)
     else
-        ssh -o PubkeyAuthentication=no -X "$host" 2> >(tee "$err_file" >&2)
+        ssh $keepalive -o PubkeyAuthentication=no -X "$host" 2> >(tee "$err_file" >&2)
     fi
     exit_code=$?
 
